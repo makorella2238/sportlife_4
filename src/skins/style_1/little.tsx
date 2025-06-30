@@ -1,49 +1,56 @@
 "use client";
 
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 import { useMatch, useScoreboard, useScenario } from "@/hooks";
 
 const getShortName = (name?: string) => (name ? name.slice(0, 4) : "");
 
 export const Little = ({ show }: { show: boolean }) => {
   const match = useMatch();
+  const falloff = 5; // количество кругов-фолов
   const { scoreboard } = useScoreboard();
 
   return (
     <Wrapper style={{ display: show ? "flex" : "none" }}>
       <FuroreFont />
-
-      {scoreboard.is_fouls && (
-        <FollsContainer>
-          {/* <FollsSlashLeft /> */}
-          <FollsContent>
-            <FollsCount>{scoreboard?.team_1_fouls ?? 0}</FollsCount>
-            <FollsText>ФОЛЫ</FollsText>
-            <FollsCount>{scoreboard?.team_2_fouls ?? 0}</FollsCount>
-          </FollsContent>
-          {/* <FollsSlashRight /> */}
-        </FollsContainer>
-      )}
-
       <Row>
         <TeamLogo side="left" src={match?.team_1?.img} />
 
-        <TeamBox side="left" color={match?.team_1?.color}>
-          <TeamName>{getShortName(match?.team_1?.name)}</TeamName>
-          <TeamSlash side="left" />
+        <TeamBox side="left">
+          <InnerBox side="left">
+            <FoulsRow side="left">
+              {[...Array(falloff)].map((_, i) => (
+                <FoulCircle
+                  key={i}
+                  active={(scoreboard?.team_1_fouls ?? 0) > i}
+                />
+              ))}
+            </FoulsRow>
+            <TeamName>{getShortName(match?.team_1?.name)}</TeamName>
+            <ScoreText side="right">{scoreboard?.team_1_score ?? 0}</ScoreText>
+          </InnerBox>
         </TeamBox>
 
-        <ScoreBox isFouls={scoreboard?.is_fouls}>
-          <ScoreText>
-            {scoreboard?.team_1_score}–{scoreboard?.team_2_score}
-          </ScoreText>
-        </ScoreBox>
+        <Divider />
 
-        <TeamBox side="right" color={match?.team_2?.color}>
-          <TeamSlash side="right" />
-          <TeamName>{getShortName(match?.team_2?.name)}</TeamName>
+        <TeamBox side="right">
+          <InnerBox side="right">
+            <FoulsRow side="right">
+              {[...Array(falloff)].map((_, i) => (
+                <FoulCircle
+                  key={i}
+                  active={(scoreboard?.team_2_fouls ?? 0) > i}
+                />
+              ))}
+            </FoulsRow>
+            <TeamName>{getShortName(match?.team_2?.name)}</TeamName>
+            <ScoreText side="left">{scoreboard?.team_2_score ?? 0}</ScoreText>
+          </InnerBox>
         </TeamBox>
+
+        <TeamLogo side="right" src={match?.team_2?.img} />
       </Row>
+
       <TeamLogo side="right" src={match?.team_2?.img} />
 
       <ScenarioContainer>
@@ -54,7 +61,6 @@ export const Little = ({ show }: { show: boolean }) => {
     </Wrapper>
   );
 };
-
 
 const slideDown = keyframes`
   from {
@@ -82,7 +88,7 @@ const FuroreFont = styled.div`
 
 const Wrapper = styled.div`
   position: absolute;
-  top: 20px;
+  top: 70px;
   left: 62px;
   display: flex;
   flex-direction: column;
@@ -93,46 +99,65 @@ const Wrapper = styled.div`
   z-index: 100;
   width: 638px;
   overflow: visible;
-   animation: ${slideDown} 0.5s ease forwards;
+  animation: ${slideDown} 0.5s ease forwards;
 `;
 
-const FollsContainer = styled.div`
+const FoulsRow = styled.div<{ side: "left" | "right" }>`
+  position: absolute;
+  top: -42px; /* 32px (размер круга) + 10px отступ */
+  left: ${({ side }) => (side === "left" ? "25%" : "auto")};
+  right: ${({ side }) => (side === "right" ? "15%" : "auto")};
   display: flex;
-  flex-direction: row;
-  margin-bottom: -10px;
+  gap: 6px;
   z-index: 5;
 `;
 
-const FollsContent = styled.div`
+const Divider = styled.div`
+  width: 5px;
+  height: 56px;
+  background: #fff;
+  z-index: 3;
+`;
+
+const TeamBox = styled.div<{ side: "left" | "right" }>`
+  background: linear-gradient(to top, #010920, #0e173f);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000;
-  padding: 8px 19px;
-  flex-grow: 1;
+  height: 56px;
+  width: 100%;
   position: relative;
-  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 10px 100%);
-  z-index: 1;
 `;
 
-const FollsText = styled.div`
-  margin: 0 15px;
-  font-family: "Furore", sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  color: #fff;
-  text-transform: uppercase;
-  flex-grow: 1;
-  text-align: center;
+const InnerBox = styled.div<{ side: "left" | "right" }>`
+  display: flex;
+  flex-direction: ${({ side }) => (side === "right" ? "row-reverse" : "row")};
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: ${({ side }) =>
+    side === "right" ? "0 50px 0 20px" : "0 20px 0 50px"};
+  box-sizing: border-box;
+  position: relative;
 `;
 
-const FollsCount = styled.div`
+const ScoreText = styled.div<{ side: "left" | "right" }>`
   font-family: "Furore", sans-serif;
-  font-size: 16px;
-  font-weight: 400;
+  font-size: 30px;
+  font-weight: 600;
   color: #fff;
-  min-width: 20px;
-  text-align: center;
+  margin: ${({ side }) => (side === "left" ? "0 12px 0 0" : "0 0 0 12px")};
+`;
+
+const FoulCircle = styled.div<{ active: boolean }>`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: ${({ active }) =>
+    active
+      ? "linear-gradient(137.26deg, #0D7D03 17.85%, #010920 98.94%)"
+      : "#1a1a1a"};
+  border: 1px solid #333;
 `;
 
 const Row = styled.div`
@@ -145,35 +170,7 @@ const Row = styled.div`
   position: relative; /* логотипы будут позиционироваться относительно Row */
   z-index: 10;
   overflow: visible;
-`;
-
-const TeamBox = styled.div<{ side: "left" | "right", color?: string }>`
-  position: relative;
-  display: flex;
-  flex-direction: ${(props) =>
-    props.side === "right" ? "row-reverse" : "row"};
-  align-items: center;
-  justify-content: flex-start;
-  padding: ${(props) => (props.side === "left" ? "0 0 0 15px" : "0 15px 0 0")};
-  margin: ${(props) => (props.side === "left" ? "0 0 0 5px" : "0 5px 0 0")};
-  background: ${(props) =>
-    props.side === "left"
-      ? `linear-gradient(90deg, ${props.color} 0%, #191919 100%)`
-      : `linear-gradient(90deg, #191919 0%, ${props.color} 100%)`};
-  height: 56px;
-
-  clip-path: ${(props) =>
-    props.side === "left"
-      ? "polygon(0 0, calc(100% - 19px) 0, 100% 100%, 0% 100%)"
-      : "polygon(19px 0, 100% 0, 100% 100%, 0 100%)"};
-
-  ${(props) =>
-    props.side === "left"
-      ? "transform: translateX(28px);"
-      : "transform: translateX(-28px);"}
-  z-index: 1;
-
-  overflow: visible;
+  border-bottom: 4px solid #0d7d03;
 `;
 
 const TeamLogo = styled.img<{ side: "left" | "right" }>`
@@ -181,17 +178,15 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
   width: 90px;
   height: 90px;
   object-fit: contain;
-  left: ${(props) => (props.side === "left" ? "-30px" : "auto")};
-  right: ${(props) => (props.side === "right" ? "-40px" : "auto")};
-  top: 50%;
-  transform: translateY(-50%);
+  left: ${(props) => (props.side === "left" ? "-40px" : "auto")};
+  right: ${(props) => (props.side === "right" ? "-50px" : "auto")};
+  top: ${(props) => (props.side === "right" ? "-15px" : "-14px")};
   z-index: 10;
 `;
 
 const TeamName = styled.div`
-  height: 56px;
   font-family: "Furore", sans-serif;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 37px;
   line-height: 48px;
   letter-spacing: 0%;
@@ -202,89 +197,57 @@ const TeamName = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
-  padding: 0 20px;
   z-index: 1;
 `;
 
-const TeamSlash = styled.div<{ side: "left" | "right" }>`
+const ScenarioContainer = styled.div`
   position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 15px;
-  background: ${(props) => (props.side === "left" ? "#008BB1" : "#FF0000")};
-  z-index: 3;
-  transform: ${(props) =>
-    props.side === "left" ? "skewX(-160deg)" : "skewX(160deg)"};
-
-  ${(props) =>
-    props.side === "left"
-      ? `right: 0; transform-origin: right;`
-      : `left: 0; transform-origin: left;`}
-`;
-
-const ScoreBox = styled.div<{ isFouls?: boolean }>`
-  width: 145.55px;
-  margin: 0 10px;
-  position: relative;
-color: ${({ isFouls }) => (isFouls === false ? "#FFFFFF" : "#001134")};
+  top: 89px;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Центр по X и Y */
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 0;
-  background: ${({ isFouls }) => (isFouls === false ? "#000" : "transparent")};
-`;
-
-
-const ScoreText = styled.div`
-  font-family: "Furore", sans-serif;
-  font-size: 37px;
-  font-weight: 400;
-  text-align: center;
-  line-height: 1;
-`;
-
-const ScenarioContainer = styled.div`
-  position: relative; /* Чтобы сработали absolute-элементы */
-  display: flex;
-  align-items: stretch;
-  width: auto;
-  margin-top: 0;
-  z-index: 2; /* Над фолами */
+  z-index: 1; /* Должен быть выше Row, но можно настраивать */
 `;
 
 const ScenarioText = styled.div`
-  font-family: "Furore", sans-serif;
-  font-size: 16px;
-  font-weight: 400;
+  height: 22px;
+  font-size: 20px;
+  font-weight: 600;
   color: #fff;
-  background: #000;
-  padding: 8px 18px;
+  background: #0e173f;
+  padding: 8px 20px;
   line-height: 1;
   white-space: nowrap;
   text-transform: uppercase;
   transform: translateY(-10px); /* Чуть выше */
   z-index: 3;
   position: relative;
+
+  display: flex;
+  align-items: center; /* Вертикальный центр */
+  justify-content: center;
 `;
 
 const ScenarioSlashLeft = styled.div`
   position: absolute;
-  left: -10px;
+  left: -30px;
   top: -10px;
-  width: 20px;
+  width: 50px;
   height: 100%;
-  background: #000;
-  transform: skewX(20deg);
+  background: #0e173f;
+  transform: skewX(45deg);
   z-index: 2;
 `;
 
 const ScenarioSlashRight = styled.div`
   position: absolute;
-  right: -10px;
+  right: -30px;
   top: -10px;
-  width: 20px;
+  width: 50px;
   height: 100%;
-  background: #000;
-  transform: skewX(-20deg);
+  background: #0e173f; /* Или другой цвет, чтобы было заметно */
+  transform: skewX(-45deg);
   z-index: 2;
 `;

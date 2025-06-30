@@ -39,7 +39,7 @@ export const match: MatchData = {
   "time": "03:00",
   "team_1": {
     "id": "6696c7ec040190bdcc6d5aef",
-    "name": "Экспресс офис Тульский комбинат",
+    "name": "Экспресс офис",
     "img": "https://admin.sporlive.ru/static/images/d1a623bbbf09442bb6a01776df0d6d48.png",
     "description": "",
     "color": "#ff7b00",
@@ -95,7 +95,7 @@ export const match: MatchData = {
   "circle": "1 тур",
   "stadium": {
     "id": "68190047af8426867ff2dd2d",
-    "name": "СК ТУЛГ",
+    "name": "СК ТУЛГУ",
     "img": "https://admin.sporlive.ru/static/images/ed31bd83b68549fd8fce5b0fcea3dfd3.jpg",
     "description": ""
   },
@@ -103,7 +103,7 @@ export const match: MatchData = {
     "id": "66ca4555c7c6a5c776e77173",
     "position": 6,
     "name": "Финальный день Летнего кубка",
-    "full_name": "Финальный день Летнего кубка",
+    "full_name": "Финальный день Летнего кубка краснодарского края",
     "img": "",
     "kind": "",
     "tours": [
@@ -112,7 +112,7 @@ export const match: MatchData = {
     "teams": [
       {
         "id": "6696c7ec040190bdcc6d5aef",
-        "name": "Экспресс офисывавыавыа",
+        "name": "Экспресс офис",
         "img": "https://admin.sporlive.ru/static/images/d1a623bbbf09442bb6a01776df0d6d48.png",
         "description": "",
         "color": "#ff7b00"
@@ -227,6 +227,57 @@ export const match: MatchData = {
       "goals": 0,
       "is_main_goalkeeper": false
     },
+    {
+      "id": "68373bc67f2e38f710f5f958",
+      "is_active": true,
+      "player": "669fdb7a11b930b2eb55b1b4",
+      "player_fio": "Чичерин Игорь ",
+      "player_ampl": "goalkeeper",
+      "player_img": "/static/images/5019e71f6d494feea4c064a3f3cac244.jpeg",
+      "player_number": "10",
+      "team": "6696c7ec040190bdcc6d5aef",
+      "match": "68373bc57f2e38f710f5f944",
+      "red": 0,
+      "yellow": 0,
+      "transits": 0,
+      "goals": 0,
+      "is_main_goalkeeper": false
+    },
+    
+    {
+      "id": "68373bc67f2e38f710f5f958",
+      "is_active": true,
+      "player": "669fdb7a11b930b2eb55b1b4",
+      "player_fio": "Чичерин Игорь ",
+      "player_ampl": "goalkeeper",
+      "player_img": "/static/images/5019e71f6d494feea4c064a3f3cac244.jpeg",
+      "player_number": "10",
+      "team": "6696c7ec040190bdcc6d5aef",
+      "match": "68373bc57f2e38f710f5f944",
+      "red": 0,
+      "yellow": 0,
+      "transits": 0,
+      "goals": 0,
+      "is_main_goalkeeper": false
+    },
+    
+    {
+      "id": "68373bc67f2e38f710f5f958",
+      "is_active": true,
+      "player": "669fdb7a11b930b2eb55b1b4",
+      "player_fio": "Чичерин Игорь ",
+      "player_ampl": "goalkeeper",
+      "player_img": "/static/images/5019e71f6d494feea4c064a3f3cac244.jpeg",
+      "player_number": "10",
+      "team": "6696c7ec040190bdcc6d5aef",
+      "match": "68373bc57f2e38f710f5f944",
+      "red": 0,
+      "yellow": 0,
+      "transits": 0,
+      "goals": 0,
+      "is_main_goalkeeper": false
+    },
+    
     {
       "id": "68373bc67f2e38f710f5f958",
       "is_active": true,
@@ -710,7 +761,7 @@ export const match: MatchData = {
       "id": "68373bc67f2e38f710f5f979",
       "is_active": true,
       "player": "677a256eb9aded1932a5352d",
-      "player_fio": "Замосковичев Владимир",
+      "player_fio": "Замоскович Владимир",
       "player_ampl": "universal",
       "player_number": "11",
       "team": "66ca45cbc7c6a5c776e7720b",
@@ -765,8 +816,8 @@ export const scoreboard_data: Scoreboard = {
   team_1_score: 12,
   team_2_score: 0,
   is_fouls: true,
-  team_1_fouls: 2,
-  team_2_fouls: 8
+  team_1_fouls: 1,
+  team_2_fouls: 0
 };
 
 export const timer_data: TimerData = {

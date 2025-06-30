@@ -6,84 +6,51 @@ import styled, { keyframes } from "styled-components";
 
 export const Mid = ({ show }: { show: boolean }) => {
   const match = useMatch();
-  const titleWords = match?.tournament?.full_name?.split(" ") || [];
-  const line1 = titleWords.slice(0, 2).join(" ");
-  const line2 = titleWords.slice(2, 4).join(" ");
-
-  const team1Ref = useRef<HTMLDivElement>(null);
-  const team2Ref = useRef<HTMLDivElement>(null);
-
-  const [team1SmallFont, setTeam1SmallFont] = useState(false);
-  const [team2SmallFont, setTeam2SmallFont] = useState(false);
-
-  function checkHeight(
-    ref: RefObject<HTMLDivElement | null>,
-    setter: (v: boolean) => void
-  ) {
-    if (!ref.current) return;
-
-    const observer = new ResizeObserver(() => {
-      const height = ref.current?.clientHeight ?? 0;
-      setter(height > 53);
-    });
-
-    observer.observe(ref.current);
-
-    return () => observer.disconnect();
-  }
-
-  useEffect(() => {
-    const disconnect1 = checkHeight(team1Ref, setTeam1SmallFont);
-    const disconnect2 = checkHeight(team2Ref, setTeam2SmallFont);
-
-    return () => {
-      disconnect1?.();
-      disconnect2?.();
-    };
-  }, [match?.team_1?.name, match?.team_2?.name]);
+  const titleWords = match?.tournament?.full_name;
 
   return (
     <Container>
       <Wrapper style={{ display: show ? "flex" : "none" }}>
         <BackgroundImage />
         <TitleContainer>
-          <TitleLine>{line1}</TitleLine>
-          <TitleLine>{line2}</TitleLine>
+          <TitleLine>{titleWords}</TitleLine>
         </TitleContainer>
 
         <TeamsContainer>
-          <TourBlock variant="normal">
-            <TourText>{match?.stadium?.name}</TourText>
-          </TourBlock>
-          <TourBlock variant="inverted">
-            <TourText>{match?.circle}</TourText>
-          </TourBlock>
+          <TourText>{match?.stadium?.name}</TourText>
         </TeamsContainer>
 
         <TeamsRow>
-          <TeamLogo side="left" src={match?.team_1?.img} />
+          <TeameBox color={match?.team_1?.color}>
+            <TeamLogo src={match?.team_1?.img} />
+            <TeamName>{match?.team_1?.name}</TeamName>
+          </TeameBox>
 
-          <TeamBox side="left" color={match?.team_1?.color} style={{ marginRight: "250px" }}>
-            <TeamName side="left" ref={team1Ref} smallFont={team1SmallFont}>
-              {match?.team_1?.name}
-            </TeamName>
-            <TeamSlash side="left" />
-          </TeamBox>
-
-          <TeamBox side="right" color={match?.team_2?.color} style={{ marginLeft: "250px" }}>
-            <TeamSlash side="right" />
-            <TeamName side="right" ref={team2Ref} smallFont={team2SmallFont}>
-              {match?.team_2?.name}
-            </TeamName>
-          </TeamBox>
-
-          <TeamLogo side="right" src={match?.team_2?.img} />
+          <TeameBox color={match?.team_2?.color}>
+            <TeamLogo src={match?.team_2?.img} />
+            <TeamName>{match?.team_2?.name}</TeamName>
+          </TeameBox>
         </TeamsRow>
-        <BottomInfo>
-          <DateText>31.07.2025</DateText>
-          <GradientSlash />
-          <TimeText>03:00</TimeText>
-        </BottomInfo>
+
+        <Row>
+          <TimeBox side="left">
+            <InnerBox side="left">
+              <TeamNameForData>31.07.2025</TeamNameForData>
+            </InnerBox>
+          </TimeBox>
+
+          <Divider />
+
+          <TimeBox side="right">
+            <InnerBox side="right">
+              <TeamNameForData>03:00</TeamNameForData>
+            </InnerBox>
+          </TimeBox>
+
+          <Trapezoid>
+            <TrapezoidText>1 тур</TrapezoidText>
+          </Trapezoid>
+        </Row>
       </Wrapper>
     </Container>
   );
@@ -112,15 +79,17 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  padding-top: 50px;
-  width: 1400px;
+  width: 1290px;
   height: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: "Furore", sans-serif;
   overflow: hidden;
+  background: linear-gradient(145.95deg, #0e173f 16.18%, #0d7d03 87.03%);
   animation: ${slideDown} 0.5s ease forwards;
+
+  padding-bottom: 20px;
 `;
 
 const BackgroundImage = styled.div`
@@ -129,11 +98,13 @@ const BackgroundImage = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: url("/Group.png") no-repeat center center / cover;
+  background: linear-gradient(145.95deg, #0e173f 16.18%, #0d7d03 87.03%);
+
   z-index: 1;
 `;
 
 const TitleContainer = styled.div`
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -143,7 +114,7 @@ const TitleContainer = styled.div`
 
 const TitleLine = styled.div`
   font-family: "Furore", sans-serif;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 56px;
   line-height: 70px;
   letter-spacing: -2%;
@@ -158,47 +129,9 @@ const TeamsContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 50px;
+  margin-top: 65px;
+  margin-bottom: 10px;
   z-index: 5;
-  margin-top: 40px;
-  margin-bottom: 64px;
-`;
-
-const TourBlock = styled.div<{ variant?: "normal" | "inverted" }>`
-  position: relative;
-  padding: 20px 50px;
-  background: #00063c;
-  border-top: 4px solid #29356a;
-  border-bottom: 4px solid #29356a;
-  overflow: hidden;
-  transform: ${({ variant }) =>
-    variant === "inverted" ? "skewX(-20deg)" : "skewX(20deg)"};
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    width: 8px;
-    height: 100%;
-    background-color: #29356a;
-    z-index: 1;
-  }
-
-  &::before {
-    left: 0;
-  }
-
-  &::after {
-    right: 0;
-  }
-
-  /* "отменяем" наклон внутри текста */
-  > * {
-    transform: ${({ variant }) =>
-      variant === "inverted" ? "skewX(20deg)" : "skewX(-20deg)"};
-    display: inline-block;
-  }
 `;
 
 const TourText = styled.div`
@@ -208,136 +141,115 @@ const TourText = styled.div`
   text-transform: uppercase;
   letter-spacing: 3px;
   text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
-`;
-
-const BottomInfo = styled.div`
-  position: absolute;
-  bottom: 60px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  z-index: 5;
-  padding: 15px 40px;
-`;
-
-const DateText = styled.div`
-  font-family: "Furore", sans-serif;
-  font-weight: 400;
-  font-size: 37px;
-  line-height: 40px;
-  letter-spacing: 0%;
-  text-align: center;
-  color: #fff;
-  text-transform: uppercase;
-  /* leading-trim: cap-height; */
-`;
-
-const TimeText = styled(DateText)``;
-
-const GradientSlash = styled.div`
-  width: 21px;
-  height: 26px;
-  background: url("/line.png") no-repeat center center / cover;
+  text-color: #fff;
 `;
 
 const TeamsRow = styled.div`
-  position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 50px;
-  width: 100%;
+  gap: 168px;
   margin-top: 20px;
   z-index: 5;
 `;
 
-const TeamBox = styled.div<{ side: "left" | "right", color?: string  }>`
-  position: relative;
+const TeameBox = styled.div<{ color?: string }>`
   display: flex;
-  flex-direction: ${(props) =>
-    props.side === "right" ? "row-reverse" : "row"};
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: ${(props) => (props.side === "left" ? "0 30px 0 0" : "0 0 0 30px")};
-  margin: ${(props) => (props.side === "left" ? "0 0 0 5px" : "0 5px 0 0")};
-  background: ${(props) =>
-    props.side === "left"
-      ? `linear-gradient(90deg, ${props.color} 0%, #191919 100%)`
-      : `linear-gradient(90deg, #191919 0%, ${props.color} 100%)`};
-  height: 78px;
-  width: 650px;
-
-  clip-path: ${(props) =>
-    props.side === "left"
-      ? "polygon(0 0, calc(100% - 19px) 0, 100% 100%, 0% 100%)"
-      : "polygon(19px 0, 100% 0, 100% 100%, 0 100%)"};
-
-  ${(props) =>
-    props.side === "left"
-      ? "transform: translateX(28px);"
-      : "transform: translateX(-28px);"}
-  z-index: 10;
-
-  overflow: visible;
 `;
 
-const TeamName = styled.div<{ side: "left" | "right"; smallFont?: boolean }>`
-  width: 100%; /* чтобы занимать всю ширину родителя */
-  justify-content: center;
-  font-family: "Furore", sans-serif;
-  font-weight: 400;
-  font-size: ${(props) => (props.smallFont ? "35px" : "46px")};
-  margin-left: ${(props) => props.side == "left" && "90px"};
-  letter-spacing: -2%;
-  text-transform: uppercase;
-  color: #fff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  white-space: normal;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-height: none;
-  z-index: 1;
-
-  ${({ side }) =>
-    side === "left"
-      ? `
-        align-items: flex-end;
-        text-align: right;
-        padding-right: 40px;
-      `
-      : `
-        align-items: flex-start;
-        text-align: left;
-        padding-left: 40px;
-      `};
-`;
-
-const TeamLogo = styled.img<{ side: "left" | "right" }>`
-  position: absolute;
-  width: 263px;
-  height: 263px;
-  object-fit: contain;
-  left: ${(props) => (props.side === "left" ? "11%" : "auto")};
-  right: ${(props) => (props.side === "right" ? "13%" : "auto")};
-  top: ${(props) => (props.side === "right" ? "-50%" : "-106%")};
-  :45px ;
-  transform: translateY(50%);
-  z-index: 20;
-`;
-
-const TeamSlash = styled.div<{ side: "left" | "right" }>`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 20px;
-  background: ${(props) => (props.side === "left" ? "#008BB1" : "#FF0000")};
+const Divider = styled.div`
+  width: 5px;
+  height: 56px;
+  background: #fff;
   z-index: 3;
-  transform: ${(props) =>
-    props.side === "left" ? "skewX(-167deg)" : "skewX(167deg)"};
+  border-bottom: 4px solid #0d7d03;
+`;
 
-  ${(props) =>
-    props.side === "left"
-      ? `right: 0; transform-origin: right;`
-      : `left: 0; transform-origin: left;`}
+const TeamName = styled.div`
+  width: 100%;
+  font-weight: 600;
+  font-size: 40px;
+  color: #fff;
+  padding: 0 24px;
+  text-transform: uppercase;
+  text-align: center;
+  max-width: 100%;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+`;
+
+const TeamNameForData = styled.div`
+  width: 224px;
+  font-weight: 600;
+  font-size: 37px;
+  color: #fff;
+  padding: 0 24px;
+  text-transform: uppercase;
+  text-align: center;
+  max-width: 100%;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+`;
+
+const TeamLogo = styled.img`
+  width: 250px;
+  height: 250px;
+  object-fit: contain;
+  margin-bottom: 20px;
+`;
+
+const Row = styled.div`
+  width: 452px;
+  margin-top: 45px;
+  height: 56px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+`;
+
+const TimeBox = styled.div<{ side: "left" | "right" }>`
+  background: linear-gradient(to top, #010920, #0e173f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  position: relative;
+  border-bottom: 4px solid #0d7d03;
+`;
+
+const InnerBox = styled.div<{ side: "left" | "right" }>`
+  display: flex;
+  flex-direction: ${({ side }) => (side === "right" ? "row-reverse" : "row")};
+  align-items: center;
+  justify-content: center;
+  padding: ${({ side }) => (side === "right" ? "0 20px" : "0 20px")};
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+`;
+
+const Trapezoid = styled.div`
+  position: absolute;
+  top: 100%; /* сразу под Row */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 40px;
+  background: #fff;
+  clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+`;
+
+const TrapezoidText = styled.div`
+  font-weight: 700;
+  font-size: 20px;
+  text-transform: uppercase;
+  color: #0e173f;
 `;

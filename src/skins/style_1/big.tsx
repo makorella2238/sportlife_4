@@ -16,7 +16,6 @@ export const Big = ({ show }: { show: boolean }) => {
 
         <TeamBox side="left" color={match?.team_1?.color}>
           <TeamName side="left">{match?.team_1?.name}</TeamName>
-          <TeamSlash side="left" />
         </TeamBox>
 
         <ScoreBox>
@@ -34,9 +33,7 @@ export const Big = ({ show }: { show: boolean }) => {
       <TeamLogo side="right" src={match?.team_2?.img} />
 
       <ScenarioContainer>
-        <ScenarioSlashLeft />
         <ScenarioText>{scenario}</ScenarioText>
-        <ScenarioSlashRight />
       </ScenarioContainer>
     </Wrapper>
   );
@@ -71,7 +68,7 @@ const FuroreFont = styled.div`
 
 const Wrapper = styled.div`
   position: absolute;
-  bottom: 20px;
+  bottom: 60px;
   left: 10%;
   display: flex;
   flex-direction: column;
@@ -94,9 +91,11 @@ const Row = styled.div`
   width: 100%;
   position: relative; /* для абсолютных логотипов */
   overflow: visible; /* чтобы логотипы не обрезались */
+  border-bottom: 4px solid #0d7d03;
 `;
 
 const TeamBox = styled.div<{ side: "left" | "right"; color?: string }>`
+  height: 110px;
   width: 585px;
   position: relative;
   display: flex;
@@ -106,10 +105,8 @@ const TeamBox = styled.div<{ side: "left" | "right"; color?: string }>`
   justify-content: flex-start;
   padding: ${(props) => (props.side === "left" ? "0 0 0 60px" : "0 60px 0 0")};
   margin: ${(props) => (props.side === "left" ? "0 0 0 5px" : "0 5px 0 0")};
-  background: ${(props) =>
-    props.side === "left"
-      ? `linear-gradient(90deg, ${props.color} 0%, #191919 100%)`
-      : `linear-gradient(90deg, #191919 0%, ${props.color} 100%)`};
+  background: linear-gradient(to bottom, #0e173f, #010920);
+  border-bottom: 4px solid #0d7d03;
   height: 90px;
 
   clip-path: ${(props) =>
@@ -133,7 +130,7 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
   object-fit: contain;
   left: ${(props) => (props.side === "left" ? "-70px" : "auto")};
   right: ${(props) => (props.side === "right" ? "-40px" : "auto")};
-  top: 45px;
+  top: ${(props) => (props.side === "right" ? "70px" : "75px")};
   transform: translateY(-50%);
   z-index: 20;
 `;
@@ -151,7 +148,6 @@ const TeamName = styled.div<{ side: "left" | "right" }>`
   overflow: hidden;
   max-width: 100%;
 
-
   padding-left: ${(props) => (props.side === "left" ? "40px" : "40px")};
   margin-right: ${(props) => (props.side === "right" ? "60px" : "30px")};
 
@@ -164,71 +160,95 @@ const TeamName = styled.div<{ side: "left" | "right" }>`
 const TeamSlash = styled.div<{ side: "left" | "right" }>`
   position: absolute;
   top: 0;
-  bottom: 0;
+  height: 119px;
   width: 20px;
-  background: ${(props) => (props.side === "left" ? "#008BB1" : "#FF0000")};
+  background: #0e173f;
   z-index: 3;
-  transform: ${(props) =>
-    props.side === "left" ? "skewX(-167deg)" : "skewX(167deg)"};
 
   ${(props) =>
     props.side === "left"
-      ? `right: 0; transform-origin: right;`
-      : `left: 0; transform-origin: left;`}
+      ? `
+        right: 0;
+        clip-path: polygon(
+          28px 0,   /* верхний левый отступ */
+          100% 0,   /* верхний правый угол */
+          100% 100%, /* нижний правый угол */
+          0 0%    /* нижний левый угол */
+        );
+      `
+      : `
+        right: 0;
+        clip-path: polygon(
+          28px 0,   /* верхний левый отступ */
+          100% 0,   /* верхний правый угол */
+          100% 100%, /* нижний правый угол */
+          0 0%    /* нижний левый угол */
+        );
+      `}
 `;
 
 const ScoreBox = styled.div`
   position: relative;
-  background: #000;
+  background: #0e173f;
   color: #fff;
   font-weight: bold;
   padding: 0 40px;
-  height: 80px;
-  margin-bottom: -5px
+  height: 119px; /* Сделали высоту 119px */
   display: flex;
-  align-items: center;
+  align-items: center; /* Вертикальное центрирование */
   justify-content: center;
   min-width: 200px;
   z-index: 1;
+  border-bottom: 4px solid #0d7d03;
 `;
 
 const ScoreText = styled.div`
-  font-family: "Furore", sans-serif;
-  font-size: 72px;
+  width: 100%;
+  font-size: 64px;
   font-weight: 700;
   text-align: center;
   line-height: 1;
 `;
 
 const ScenarioContainer = styled.div`
+  height: 43px;
+  position: absolute;
+  top: -43px; // Подвинуть вверх над счетчиком (регулируйте по необходимости)
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
   display: flex;
   align-items: stretch;
-  width: auto;
-  margin-top: 0; /* Убрали отступ */
+  background: #00a954;
+  clip-path: polygon(
+    20px 0,
+    /* верхний левый срез */ calc(100% - 20px) 0,
+    /* верхний правый срез */ 100% 100%,
+    /* нижний правый угол */ 0% 100% /* нижний левый угол */
+  );
+  z-index: 5;
 `;
 
+// Скорректируем ScenarioText, чтобы занял всё пространство
 const ScenarioText = styled.div`
+  flex: 1;
   font-family: "Furore", sans-serif;
-  font-size: 32px;
-  font-weight: 400;
+  font-size: 24px;
+  font-weight: 500;
   color: #fff;
-  background: #000;
-  padding: 8px 12px;
+  padding: 0 20px;
   line-height: 1;
   white-space: nowrap;
-  text-transform: uppercase; /* Капс */
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ScenarioSlashLeft = styled.div`
-  width: 20px;
-  background: #000;
-  transform: skewX(20deg);
-  margin-right: -10px;
+  width: 0; // убираем ширину, т.к. срезы есть в clip-path
 `;
 
 const ScenarioSlashRight = styled.div`
-  width: 20px;
-  background: #000;
-  transform: skewX(-20deg);
-  margin-left: -10px;
+  width: 0; // то же самое
 `;
