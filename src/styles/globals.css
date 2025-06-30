@@ -1,0 +1,12 @@
+@font-face {
+  font-family: "Furore";
+  src: url("/fonts/Furore.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Furore", sans-serif;
+}
