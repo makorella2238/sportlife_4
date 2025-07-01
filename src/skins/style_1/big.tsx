@@ -12,11 +12,6 @@ export const Big = ({ show }: { show: boolean }) => {
     <Wrapper style={{ display: show ? "flex" : "none" }}>
       <FuroreFont />
 
-      <ScenarioContainer>
-        <ScenarioGradientLeft />
-        <ScenarioGradientRight />
-      </ScenarioContainer>
-
       <Row>
         <TeamLogo side="left" src={match?.team_1?.img} />
 
@@ -31,7 +26,6 @@ export const Big = ({ show }: { show: boolean }) => {
         </ScoreBox>
 
         <TeamBox side="right" color={match?.team_2?.color}>
-          <TeamSlash side="right" />
           <TeamName side="right">{match?.team_2?.name}</TeamName>
         </TeamBox>
       </Row>
@@ -74,7 +68,7 @@ const FuroreFont = styled.div`
 
 const Wrapper = styled.div`
   position: absolute;
-  bottom: 60px;
+  bottom: 100px;
   left: 10%;
   display: flex;
   flex-direction: column;
@@ -88,61 +82,44 @@ const Wrapper = styled.div`
 `;
 
 const Row = styled.div`
+  border-radius: 70px 70px 0 0;
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
+  align-items: center;
   align-items: end; /* выравниваем по нижнему краю */
   justify-content: center;
   gap: 0;
-  height: 90px;
+  height: 125px;
   width: 100%;
   position: relative; /* для абсолютных логотипов */
   overflow: visible; /* чтобы логотипы не обрезались */
-  border-bottom: 4px solid #0d7d03;
+  background: #D43927
 `;
 
 const TeamBox = styled.div<{ side: "left" | "right"; color?: string }>`
   height: 110px;
-  width: 585px;
+  width: 561px;
   position: relative;
   display: flex;
-  flex-direction: ${(props) =>
-    props.side === "right" ? "row-reverse" : "row"};
+  flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-  padding: ${(props) => (props.side === "left" ? "0 0 0 60px" : "0 60px 0 0")};
-  margin: ${(props) => (props.side === "left" ? "0 0 0 5px" : "0 5px 0 0")};
-  background: linear-gradient(to bottom, #0e173f, #010920);
-  border-bottom: 4px solid #0d7d03;
-  height: 90px;
-
-  clip-path: ${(props) =>
-    props.side === "left"
-      ? "polygon(0 0, calc(100% - 28px) 0, 100% 100%, 0% 100%)"
-      : "polygon(28px 0, 100% 0, 100% 100%, 0 100%)"};
+  justify-content: "flex-start" 
+  
+  /* Убираем padding */
+  padding: 0;
 
   ${(props) =>
     props.side === "left"
-      ? "transform: translateX(28px);"
-      : "transform: translateX(-28px);"}
-  z-index: 10;
+      ? "transform: translateX(50px);"
+      : "transform: translateX(20px);"};
 
+  z-index: 10;
   overflow: visible;
 `;
 
-const TeamLogo = styled.img<{ side: "left" | "right" }>`
-  position: absolute;
-  width: 141px;
-  height: 141px;
-  object-fit: contain;
-  left: ${(props) => (props.side === "left" ? "-70px" : "auto")};
-  right: ${(props) => (props.side === "right" ? "-40px" : "auto")};
-  top: ${(props) => (props.side === "right" ? "115px" : "75px")};
-  transform: translateY(-50%);
-  z-index: 20;
-`;
-
 const TeamName = styled.div<{ side: "left" | "right" }>`
+  width: calc(100% - 60px);
   font-family: "Furore", sans-serif;
   font-weight: 400;
   font-size: 48px;
@@ -153,10 +130,10 @@ const TeamName = styled.div<{ side: "left" | "right" }>`
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   white-space: nowrap;
   overflow: hidden;
-  max-width: 100%;
+  display: flex;
 
-  padding-left: ${(props) => (props.side === "left" ? "40px" : "40px")};
-  margin-right: ${(props) => (props.side === "right" ? "60px" : "30px")};
+  margin-left: ${(props) => (props.side === "right" ? "30px" : "60px")};
+  margin-right: ${(props) => (props.side === "left" ? "40px" : "0px")};
 
   position: relative;
   mask-image: linear-gradient(to right, black 90%, transparent 100%);
@@ -164,79 +141,17 @@ const TeamName = styled.div<{ side: "left" | "right" }>`
   z-index: 1;
 `;
 
-const ScenarioContainer = styled.div`
-  position: relative;
-  width: 820px;
-  height: 43px;
-  margin: 0 auto;
-  display: flex;
-  top: 60px; /* убираем top, если не нужно */
-  left: auto;
-  z-index: 0;
-`;
 
-const ScenarioGradientLeft = styled.div`
-  width: 50%; // левая половина
-  height: 100%;
-  clip-path: polygon(20px 0, 100% 0, 100% 100%, 0% 100%);
-  background: linear-gradient(90deg, #00a954 0%, #095102 51.98%, #00a954 100%);
-  position: relative;
-  z-index: 1;
-`;
-
-const ScenarioGradientRight = styled.div`
-  width: 50%; // правая половина
-  height: 100%;
-  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 100%, 0% 100%);
-  background: red;
-  position: relative;
-  z-index: 2;
-`;
-
-
-const TeamSlash = styled.div<{ side: "left" | "right" }>`
+const TeamLogo = styled.img<{ side: "left" | "right" }>`
   position: absolute;
-  top: 0;
-  height: 119px;
-  width: 20px;
-  background: #0e173f;
-  z-index: 3;
-
-  ${(props) =>
-    props.side === "left"
-      ? `
-        right: 0;
-        clip-path: polygon(
-          28px 0,   /* верхний левый отступ */
-          100% 0,   /* верхний правый угол */
-          100% 100%, /* нижний правый угол */
-          0 0%    /* нижний левый угол */
-        );
-      `
-      : `
-        right: 0;
-        clip-path: polygon(
-          28px 0,   /* верхний левый отступ */
-          100% 0,   /* верхний правый угол */
-          100% 100%, /* нижний правый угол */
-          0 0%    /* нижний левый угол */
-        );
-      `}
-`;
-
-const ScoreBox = styled.div`
-  position: relative;
-  background: #0e173f;
-  color: #fff;
-  font-weight: bold;
-  padding: 0 40px;
-  height: 119px; /* Сделали высоту 119px */
-  display: flex;
-  align-items: center; /* Вертикальное центрирование */
-  justify-content: center;
-  min-width: 200px;
-  z-index: 1;
-  border-bottom: 4px solid #0d7d03;
+  width: 189px;
+  height: 180px;
+  object-fit: contain;
+  left: ${(props) => (props.side === "left" ? "-93px" : "auto")};
+  right: ${(props) => (props.side === "right" ? "-40px" : "auto")};
+  top: ${(props) => (props.side === "right" ? "55px" : "66px")};
+  transform: translateY(-50%);
+  z-index: 20;
 `;
 
 const ScoreText = styled.div`
@@ -248,35 +163,32 @@ const ScoreText = styled.div`
 `;
 
 const ScenarioContainerStart = styled.div`
-  height: 43px;
+  width: 311px;
+  height: 88px;
+  background: #B92025; /* проверь, что ; стоит в конце */
+  border-radius: 0 0 25px 25px;
   position: absolute;
-  top: 0px; // Подвинуть вверх над счетчиком (регулируйте по необходимости)
+  top: 125px;
   left: 50%;
   transform: translateX(-50%);
-  width: 220px;
   display: flex;
-  align-items: stretch;
-  background: #00a954;
-  clip-path: polygon(
-    20px 0,
-    /* верхний левый срез */ calc(100% - 20px) 0,
-    /* верхний правый срез */ 100% 100%,
-    /* нижний правый угол */ 0% 100% /* нижний левый угол */
-  );
+  align-items: center;
+  justify-content: center;
   z-index: 5;
 `;
 
-// Новая трапеция с градиентом поверх старой
-const ScenarioGradientOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 820px;
-  height: 43px;
-  clip-path: polygon(30px 0, calc(100% - 30px) 0, 100% 100%, 0% 100%);
-  background: linear-gradient(90deg, #00a954 0%, #095102 51.98%, #00a954 100%);
-  z-index: 6;
-  pointer-events: none; /* чтобы не мешал кликам */
+const ScoreBox = styled.div`
+  position: relative;
+  background: #242625; /* добавь точку с запятой */
+  color: #fff;
+  font-weight: bold;
+  height: 125px;
+  width: 414px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 70px 70px 0 0;
+  z-index: 1;
 `;
 
 // Скорректируем ScenarioText, чтобы занял всё пространство

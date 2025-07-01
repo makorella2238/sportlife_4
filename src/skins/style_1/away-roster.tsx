@@ -2,50 +2,41 @@
 
 import styled, { keyframes } from "styled-components";
 import { useMatch } from "@/hooks";
-
 export const AwayRoster = ({ show }: { show: boolean }) => {
   const match = useMatch();
-  const players = match?.results_2?.slice(0, 9) || [];
-  const teamName = match?.team_2?.name || "";
+  const players = match?.results_1?.slice(0, 9) || [];
+  const teamName = match?.team_1?.name || "";
 
   return (
-    <Container style={{ display: show ? "flex" : "none" }}>
-      <Wrapper>
-        <HeaderRow>
-          <Title>СОСТАВ {teamName}</Title>
-        </HeaderRow>
-        <Row>
-          <LeftCol>
-            <GridWrapper>
-              {players.map((player, i) => (
-                <PlayerBlock key={`player-${i}`}>
-                  <LeftImage src="/pers.png" />
-                  <RightInfo>
-                    <NameBlock>{player.player_fio}</NameBlock>
-                    <NumberBlock>{player.player_number}</NumberBlock>
-                  </RightInfo>
-                </PlayerBlock>
-              ))}
-
-              {/* Тренеры и представители */}
-              {match.team_2.coaches.map((coach, idx) => (
-                <PlayerBlock key={`coach-${idx}`}>
-                  <LeftImage src="/pers.png" alt="Coach" />
-                  <Rint>
-                    <Fio>{coach.fio.replace(" ", "\n")}</Fio>
-                    <BottomInf>
-                      {idx === 0 ? "Тренер" : "Представитель"}
-                    </BottomInf>
-                  </Rint>
-                </PlayerBlock>
-              ))}
-            </GridWrapper>
-          </LeftCol>
-
-          <RightCol>
-            <TeamLogo src={match?.team_2?.img} alt="Team Logo" />
-          </RightCol>
-        </Row>
+    <Container>
+      <Wrapper style={{ display: show ? "flex" : "none" }}>
+        <BackgroundImage />
+        <Overlay /> {/* <-- вот сюда */}
+        <TitleContainer>
+          <TitleLine>Состав {teamName}</TitleLine>
+        </TitleContainer>
+        <TeamLogo src={match?.team_1?.img} />
+        <Trener>
+          <TrItem>
+            <TrTitle>ГЛАВНЫЙ ТРЕНЕР</TrTitle>
+            <TrName>{match?.team_1?.coaches[0].fio}</TrName>
+          </TrItem>
+          <TrItem>
+            <TrTitle>Тренер</TrTitle>
+            <TrName>{match?.team_1?.representativs[0].fio}</TrName>
+          </TrItem>
+        </Trener>
+        <GridWrapper>
+          {players.map((player, i) => (
+            <PlayerBlock key={`player-${i}`}>
+              <RightInfo>
+                <NumberBlock>{player.player_number}</NumberBlock>
+                <NameBlock>{player.player_fio}</NameBlock>
+              </RightInfo>
+              <LeftImage src="/personCard.png" />
+            </PlayerBlock>
+          ))}
+        </GridWrapper>
       </Wrapper>
     </Container>
   );
@@ -63,170 +54,186 @@ const slideDown = keyframes`
 `;
 
 const Container = styled.div`
-  text-color: #fff;
-  width: 1720px;
-  height: 600px;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  right: 0;
-  bottom: 0;
+  top: -2%;
+  right: 15%;
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-const gradientPulse = keyframes`
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  width: 1432px;
+  height: 960px;
 `;
 
 const Wrapper = styled.div`
-  background: linear-gradient(-45deg, #0e173f, #001b94, #0e173f);
-  background-size: 400% 400%;
-  animation: ${slideDown} 1s ease forwards, ${gradientPulse} 10s ease infinite;
-  padding: 100px 55px 70px 70px;
+  border-radius: 64px;
+  width: 1432px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Furore", sans-serif;
+  overflow: hidden;
+  background: url("/Group.png") no-repeat center center / cover;
+  animation: ${slideDown} 0.5s ease forwards;
+  padding-bottom: 20px;
+  position: relative; /* для абсолютных элементов внутри */
+`;
+
+const BackgroundImage = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  z-index: 1;
 `;
 
-
-const LeftCol = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #d43927;
+  opacity: 0.7;
+  z-index: 2;
 `;
 
-const RightCol = styled.div`
-  width: 272px;
+const TitleContainer = styled.div`
+  padding: 32px 45px;
+  width: 686px;
+  border-radius: 0 0 24px 24px;
   display: flex;
+  background: #242424;
   flex-direction: column;
   align-items: center;
-  margin-left: 55px;
-`;
-
-const HeaderRow = styled.div`
-  height: 45px;
-  color: #ffffff;
-  display: flex;
   justify-content: center;
-  align-items: center;
+  z-index: 5;
+  margin-bottom: 30px;
 `;
 
-const Title = styled.h1`
-  font-size: 56px;
+const TitleLine = styled.div`
   font-weight: 600;
+  font-size: 48px;
+  line-height: 70px;
+  text-align: center;
+  color: #fff;
   text-transform: uppercase;
 `;
 
 const TeamLogo = styled.img`
-  margin-top: 20px;
-  width: 272px;
-  height: 272px;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  width: 168px;
+  height: 168px;
   object-fit: contain;
+  margin-bottom: 20px;
+  z-index: 5;
 `;
 
-const GridWrapper = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 112px;
-  gap: 20px 60px;
-  padding-bottom: 70px;
-
-  `;
-
-const PlayerBlock = styled.div`
-  margin-top: 20px;
+const Trener = styled.div`
   display: flex;
-  width: 272px;
-  height: 112px;
+  gap: 54pxpx;
+  margin-top: 30px;
+  margin-bottom: 32px;
+  z-index: 5;
 `;
 
-const LeftImage = styled.img`
-  width: 90px;
-  height: 112px;
-  object-fit: cover;
+const TrTitle = styled.div`
+  font-weight: 400;
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 8px;
+  text-transform: uppercase;
 `;
 
 const RightInfo = styled.div`
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  margin-left: 12px;
+  justify-content: space-between;
 `;
 
-const Row = styled.div`
-  margin-top: 69px;
-  display: flex;
+const GridWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 380px); /* 3 колонки фиксированной ширины */
+  column-gap: 40px; /* отступ между колонками */
+  row-gap: 20px; /* отступы между строками */
+  justify-content: center; /* центрируем грид */
+  max-height: calc(7 * (79px + 20px)); /* высота 7 строк */
+  max-width: 100%;
+  padding: 0; /* убираем внешние отступы */
+  z-index: 5;
+  margin-bottom: 74px;
+
 `;
 
-const NameBlock = styled.div`
-  margin-top: 2px;
-  width: 150px;
-  height: 44px;
-  background: linear-gradient(90deg, #095102 0%, #00a954 51.68%, #095102 100%);
-  color: white;
-  font-size: 20px;
-  font-weight: 600;
-  padding: 10px 16px;
+const PlayerBlock = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  white-space: pre-line;
-  text-transform: uppercase;
-  text-align: left;
-  line-height: 1.2;
+  align-items: center;
+  height: 79px;
+  width: 386px; /* фиксированная ширина */
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    #9b1000 40%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  box-sizing: border-box;
+  border-radius: 8px;
+  /* Убираем margin-left */
+  margin-left: 0;
 `;
 
 const NumberBlock = styled.div`
-  width: 46px;
-  height: 44px;
-  background: #0e173f;
-  color: #ffffff;
-
-  font-size: 18px;
+  width: 24px;
   font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const BottomInf = styled.div`
-  width: 100%;
-  height: 44px;
-  background: #0e173f;
+  font-size: 24px;
   color: #fff;
-  font-size: 20px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-shrink: 0;
 `;
 
-const Fio = styled.div`
-  padding: 8px 16px;
-
-  width: 182px;
-  height: 44px;
-  background: #000000; /* ← пропущена ; */
+const NameBlock = styled.div`
+  width: 231px
+  font-weight: 600;
+  font-size: 23px;
+  text-transform: uppercase;
   color: #fff;
-  font-size: 20px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  white-space: pre-line; /* ← обязательно для \n */
+  margin-left: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1; /* чтобы занимать максимум доступного места */
 `;
 
-const Rint = styled.div`
-  display: flex; /* ← исправлено dislay */
+const LeftImage = styled.img`
+  width: 71px;
+  height: 79px;
+  object-fit: contain;
+  flex-shrink: 0;
+`;
+
+// Для тренеров делаем контейнер с фиксированной шириной,
+// чтобы ФИО не переносилось и влезало
+const TrItem = styled.div`
+  display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  width: 280px; /* достаточно широкая, чтобы ФИО помещалось */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const TrName = styled.div`
+  font-weight: 600;
+  font-size: 22px;
+  color: #fff;
+  max-width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

@@ -12,44 +12,36 @@ export const Mid = ({ show }: { show: boolean }) => {
     <Container>
       <Wrapper style={{ display: show ? "flex" : "none" }}>
         <BackgroundImage />
+        <Overlay /> {/* <-- вот сюда */}
         <TitleContainer>
           <TitleLine>{titleWords}</TitleLine>
         </TitleContainer>
-
         <TeamsContainer>
-          <TourText>{match?.stadium?.name}</TourText>
+          <TourTextCom>{match?.stadium?.name}</TourTextCom>
         </TeamsContainer>
-
         <TeamsRow>
           <TeameBox color={match?.team_1?.color}>
             <TeamLogo src={match?.team_1?.img} />
             <TeamName>{match?.team_1?.name}</TeamName>
           </TeameBox>
 
+          <LogoCombo>
+            <TeamLogo1 src="/vs/V.png" />
+            <TeamLogo2 src="/vs/moln.png" />
+            <TeamLogo3 src="/vs/S.png" />
+          </LogoCombo>
+
           <TeameBox color={match?.team_2?.color}>
             <TeamLogo src={match?.team_2?.img} />
             <TeamName>{match?.team_2?.name}</TeamName>
           </TeameBox>
         </TeamsRow>
-
         <Row>
-          <TimeBox side="left">
-            <InnerBox side="left">
-              <TeamNameForData>31.07.2025</TeamNameForData>
-            </InnerBox>
-          </TimeBox>
-
-          <Divider />
-
-          <TimeBox side="right">
-            <InnerBox side="right">
-              <TeamNameForData>03:00</TeamNameForData>
-            </InnerBox>
-          </TimeBox>
-
-          <Trapezoid>
-            <TrapezoidText>1 тур</TrapezoidText>
-          </Trapezoid>
+          <DateBox>31.07.2025</DateBox>
+          <TourBox>
+            <TourText>1 тур</TourText>
+          </TourBox>
+          <TimeBox>03:00</TimeBox>
         </Row>
       </Wrapper>
     </Container>
@@ -79,6 +71,7 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
+  border-radius: 64px;
   width: 1290px;
   height: 800px;
   display: flex;
@@ -86,22 +79,10 @@ const Wrapper = styled.div`
   align-items: center;
   font-family: "Furore", sans-serif;
   overflow: hidden;
-  background: linear-gradient(145.95deg, #0e173f 16.18%, #0d7d03 87.03%);
+  background: url("/Group.png") no-repeat center center / cover;
   animation: ${slideDown} 0.5s ease forwards;
 
   padding-bottom: 20px;
-`;
-
-const animatedGradient = keyframes`
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
 `;
 
 const BackgroundImage = styled.div`
@@ -110,16 +91,16 @@ const BackgroundImage = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, #0d7d03, #0e173f);
-  background-size: 200% 200%;
-  animation: ${animatedGradient} 20s linear infinite;
 
   z-index: 1;
 `;
 
 const TitleContainer = styled.div`
-  margin-top: 80px;
+  padding: 32px 45px;
+  width: 891px;
+  border-radius: 0 0 24px 24px;
   display: flex;
+  background: #242424;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -127,15 +108,12 @@ const TitleContainer = styled.div`
 `;
 
 const TitleLine = styled.div`
-  font-family: "Furore", sans-serif;
   font-weight: 600;
-  font-size: 56px;
+  font-size: 48px;
   line-height: 70px;
-  letter-spacing: -2%;
   text-align: center;
   color: #fff;
   text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 `;
 
 const TeamsContainer = styled.div`
@@ -148,24 +126,28 @@ const TeamsContainer = styled.div`
   z-index: 5;
 `;
 
-const TourText = styled.div`
-  font-size: 37px;
-  font-weight: 700;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
-  text-color: #fff;
-`;
-
 const TeamsRow = styled.div`
   display: flex;
-  flex-direction: row;
+  juctify-content: center;
+  width: 1039px;
+  position: relative;       /* Чтобы позиционировать LogoCombo относительно этого контейнера */
+  display: flex;
+  justify-content: space-between; /* Команды слева и справа */
   align-items: center;
-  justify-content: center;
-  gap: 168px;
   margin-top: 20px;
   z-index: 5;
+`;
+
+
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #d43927;
+  opacity: 0.7; /* Можно регулировать прозрачность */
+  z-index: 2; /* Поверх фонового изображения, но под контентом */
 `;
 
 const TeameBox = styled.div<{ color?: string }>`
@@ -174,30 +156,11 @@ const TeameBox = styled.div<{ color?: string }>`
   align-items: center;
 `;
 
-const Divider = styled.div`
-  width: 5px;
-  height: 56px;
-  background: #fff;
-  z-index: 3;
-  border-bottom: 4px solid #0d7d03;
-`;
 
 const TeamName = styled.div`
   width: 100%;
   font-weight: 600;
   font-size: 40px;
-  color: #fff;
-  padding: 0 24px;
-  text-transform: uppercase;
-  text-align: center;
-  max-width: 100%;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-`;
-
-const TeamNameForData = styled.div`
-  width: 224px;
-  font-weight: 600;
-  font-size: 37px;
   color: #fff;
   padding: 0 24px;
   text-transform: uppercase;
@@ -214,56 +177,96 @@ const TeamLogo = styled.img`
 `;
 
 const Row = styled.div`
-  width: 452px;
-  margin-top: 45px;
-  height: 56px;
+  border-radius: 24px 24px 0 0;
+
+  width: 581px;
+  margin-top: 64px;
+  height: 88px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   justify-content: center;
   position: relative;
-  z-index: 10;
+  background: rgb(148, 38, 25);
+  z-index: 5;
 `;
 
-const TimeBox = styled.div<{ side: "left" | "right" }>`
-  background: linear-gradient(to top, #010920, #0e173f);
+const DateBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 56px;
-  position: relative;
-  border-bottom: 4px solid #0d7d03;
-`;
-
-const InnerBox = styled.div<{ side: "left" | "right" }>`
-  display: flex;
-  flex-direction: ${({ side }) => (side === "right" ? "row-reverse" : "row")};
-  align-items: center;
-  justify-content: center;
-  padding: ${({ side }) => (side === "right" ? "0 20px" : "0 20px")};
-  width: 100%;
-  box-sizing: border-box;
-  position: relative;
-`;
-
-const Trapezoid = styled.div`
-  position: absolute;
-  top: 100%; /* сразу под Row */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 180px;
-  height: 40px;
-  background: #fff;
-  clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 15;
-`;
-
-const TrapezoidText = styled.div`
-  font-weight: 700;
-  font-size: 20px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 37px;
   text-transform: uppercase;
-  color: #0e173f;
+  padding: 0 20px;
+`;
+
+const TimeBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  font-size: 37px;
+  text-transform: uppercase;
+  padding: 0 20px;
+`;
+
+const TourBox = styled.div`
+  border-radius: 24px 24px 0 0;
+
+  width: 180px;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #242625;
+  color: #fff;
+`;
+
+const TourText = styled.div`
+  font-weight: 600;
+  font-size: 24px;
+  text-transform: uppercase;
+  color: #fff;
+  user-select: none;
+`;
+
+const TourTextCom = styled.div`
+  font-weight: 600;
+  font-size: 37px;
+  text-transform: uppercase;
+  color: #fff;
+  user-select: none;
+`;
+
+const TeamLogo1 = styled.img`
+  width: 98.11px;
+  height: 105.7px;
+  object-fit: contain;
+`;
+
+const TeamLogo2 = styled.img`
+  width: 68px;
+  height: 182px;
+  object-fit: contain;
+`;
+
+const TeamLogo3 = styled.img`
+  width: 87.72px;
+  height: 108.75px;
+  object-fit: contain;
+`;
+
+const LogoCombo = styled.div`
+  position: absolute;      /* Абсолютное позиционирование */
+  left: 50%;              /* Сдвигаем в центр по левому краю */
+  transform: translateX(-50%); /* Центрируем по середине */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  z-index: 10;            /* Поверх всего */
+  width: 300px;           /* Можно подстроить под размеры логотипов */
 `;

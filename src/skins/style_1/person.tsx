@@ -8,12 +8,12 @@ export const Person = ({ kind, show }: { kind: string; show: boolean }) => {
   return (
     <Wrapper style={{ display: show ? "flex" : "none" }}>
       <TeamBoxWrapper>
-        <PersImage src="/personCard.png" alt="Player" />
+        {kind !== "yellow" && kind !== "red" && <PersImage src="/personCard.png" alt="Player"  />}
 
         {kind == "goal" && <Goal>ГОЛ!</Goal>}
         {kind == "yellow" && <YellowBarLeft />}
         {kind == "red" && <RedBarLeft />}
-        <TeamBox side="left">
+        <TeamBox side="left" wide={kind === "yellow" || kind === "red"}>
           <LineWrapper>
             <YellowLine />
           </LineWrapper>
@@ -24,7 +24,6 @@ export const Person = ({ kind, show }: { kind: string; show: boolean }) => {
             <TeamNameLit side="right">экспресс офис</TeamNameLit>
           </Col>
         </TeamBox>
-        <TeamLogo side="right" src={match?.team_1?.img} />
       </TeamBoxWrapper>
     </Wrapper>
   );
@@ -43,6 +42,8 @@ const slideInFromLeft = keyframes`
 
 const Row = styled.div`
   display: flex;
+  justify-content: flex-end;
+  
 `;
 
 const Wrapper = styled.div`
@@ -50,6 +51,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
+    border-bottom: none
 `;
 
 const TeamBoxWrapper = styled.div`
@@ -61,9 +63,10 @@ const TeamBoxWrapper = styled.div`
 `;
 
 const YellowBarLeft = styled.div`
+  border-radius: 12px 0 0 0;
   position: absolute;
   top: 0;
-  left: -58px;
+  left: 0px;
   width: 58px;
   height: 100%;
   background: #ffc70f;
@@ -72,9 +75,10 @@ const YellowBarLeft = styled.div`
 `;
 
 const RedBarLeft = styled.div`
+  border-radius: 12px 0 0 0;
   position: absolute;
   top: 0;
-  left: -58px;
+  left: 0px;
   width: 58px;
   height: 100%;
   background: rgba(255, 15, 15, 1);
@@ -83,24 +87,18 @@ const RedBarLeft = styled.div`
 `;
 
 const Goal = styled.div`
+  border-radius: 12px 12px 0 0;
   position: absolute;
-  top: -50px; /* чуть выше изображения */
-  right: 130px; /* отступ от правого края блока */
+  top: -43px; /* чуть выше изображения */
+  right: 210px; /* сдвинуть влево для нависания */
   width: 121px;
-  height: 50px;
-  background: linear-gradient(
-    90deg,
-    /* направление: слева направо */ #00a954 0%,
-    /* светло-зелёный в начале */ #00904a 50%,
-    /* средний оттенок */ #006633 100% /* тёмно-зелёный в конце */
-  );
-
-  clip-path: polygon(25px 0, 100% 0, 100% 100%, 0 100%);
+  height: 43px;
+  background: #d43927;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: "Furore", sans-serif;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   color: #fff;
   z-index: 4;
@@ -122,56 +120,48 @@ const YellowLine = styled.div`
   background: #0d7d03;
 `;
 
-const PersImage = styled.img`
+const PersImage = styled.img<{ wide?: boolean }>`
   position: absolute;
   top: -130px;
-  right: 10px;
+  right: ${({ wide }) => (wide ? "60px" : "110px")}; /* 110 + 60 = 170 */
   width: 120px;
   height: 130px;
   object-fit: cover;
   z-index: 2;
 `;
 
-const TeamLogo = styled.img<{ side: "left" | "right" }>`
-  position: absolute;
-  top: -34px;
-  right: -90px;
-  height: 186px;
-  width: 186px;
-  object-fit: contain;
-  margin-left: 20px;
-  z-index: 3;
-  align-self: center;
-`;
-
-const TeamBox = styled.div<{ side: "left" | "right" }>`
+const TeamBox = styled.div<{ side: "left" | "right"; wide?: boolean }>`
+  width: ${({ wide }) => (wide ? "450px" : "392px")};
+  border-radius: ${({ wide }) => (wide ? "24px 0 0 0" : "24px 24px 0 0")};
+  : ;
   position: relative;
   background: linear-gradient(
     180deg,
     rgba(14, 23, 63, 1) 0%,
     rgba(1, 9, 32, 1) 100%
   );
-  position: relative;
   display: flex;
   height: 120px;
   align-items: center;
   overflow: hidden;
   justify-content: flex-end;
-  padding-left: 100px;
+  text-align: right;
+  border-bottom: none
 `;
 
 const Col = styled.div`
   display: flex;
   flex-direction: column;
   z-index: 2;
-  margin-right: 100px;
+  width: 100%; /* занять всю ширину */
+  padding-right: 20px; /* отступ справа */
   align-items: flex-end;
+    border-bottom: none
 `;
 
 const TeamName = styled.div<{ side: "left" | "right" }>`
-  height: 40px;
-  display: flex;
-  align-items: center;
+  width: 100%; /* занять всю ширину */
+  text-align: right; /* прижать текст к правому краю */
   font-family: "Furore", sans-serif;
   font-size: 35px;
   font-weight: 600;
@@ -181,12 +171,12 @@ const TeamName = styled.div<{ side: "left" | "right" }>`
   overflow: hidden;
   text-overflow: ellipsis;
   z-index: 1;
+  /* убираем display: flex для обычного текста */
 `;
 
 const TeamNameLit = styled.div<{ side: "left" | "right" }>`
-  height: 40px;
-  display: flex;
-  align-items: center;
+  width: 100%;
+  text-align: right;
   font-weight: 600;
   font-family: "Furore", sans-serif;
   font-size: 28px;
@@ -196,14 +186,5 @@ const TeamNameLit = styled.div<{ side: "left" | "right" }>`
   overflow: hidden;
   text-overflow: ellipsis;
   z-index: 1;
-  ${({ side }) =>
-    side === "left"
-      ? `
-        padding-left: 40px;
-        justify-content: flex-end;
-      `
-      : `
-        padding-right: 15px;
-        justify-content: flex-end;
-      `}
+  padding-right: 15px;
 `;
