@@ -68,7 +68,7 @@ const slideDown = keyframes`
 const Container = styled.div`
   text-color: #fff;
   width: 1720px;
-  height: 920px;
+  height: 820px;
   position: absolute;
   top: 50%;
   left: 50%;
