@@ -129,6 +129,7 @@ const TeamBox = styled.div<{ side: "left" | "right" }>`
   height: 56px;
   width: 100%;
   position: relative;
+  border-bottom: ${({ side }) => side === "left" ? "4px solid #0d7d03" : "4px solid rgb(179, 27, 22)"};
 `;
 
 const InnerBox = styled.div<{ side: "left" | "right" }>`
@@ -172,7 +173,7 @@ const Row = styled.div`
   position: relative; /* логотипы будут позиционироваться относительно Row */
   z-index: 10;
   overflow: visible;
-  border-bottom: 4px solid #0d7d03;
+
 `;
 
 const TeamLogo = styled.img<{ side: "left" | "right" }>`
