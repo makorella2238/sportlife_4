@@ -13,7 +13,8 @@ export const Big = ({ show }: { show: boolean }) => {
       <FuroreFont />
 
       <ScenarioContainer>
-        <ScenarioGradientOverlay />
+        <ScenarioGradientLeft />
+        <ScenarioGradientRight />
       </ScenarioContainer>
 
       <Row>
@@ -136,7 +137,7 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
   object-fit: contain;
   left: ${(props) => (props.side === "left" ? "-70px" : "auto")};
   right: ${(props) => (props.side === "right" ? "-40px" : "auto")};
-  top: ${(props) => (props.side === "right" ? "70px" : "75px")};
+  top: ${(props) => (props.side === "right" ? "115px" : "75px")};
   transform: translateY(-50%);
   z-index: 20;
 `;
@@ -162,6 +163,36 @@ const TeamName = styled.div<{ side: "left" | "right" }>`
   -webkit-mask-image: linear-gradient(to right, black 90%, transparent 100%);
   z-index: 1;
 `;
+
+const ScenarioContainer = styled.div`
+  position: relative;
+  width: 820px;
+  height: 43px;
+  margin: 0 auto;
+  display: flex;
+  top: 60px; /* убираем top, если не нужно */
+  left: auto;
+  z-index: 0;
+`;
+
+const ScenarioGradientLeft = styled.div`
+  width: 50%; // левая половина
+  height: 100%;
+  clip-path: polygon(20px 0, 100% 0, 100% 100%, 0% 100%);
+  background: linear-gradient(90deg, #00a954 0%, #095102 51.98%, #00a954 100%);
+  position: relative;
+  z-index: 1;
+`;
+
+const ScenarioGradientRight = styled.div`
+  width: 50%; // правая половина
+  height: 100%;
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 100%, 0% 100%);
+  background: red;
+  position: relative;
+  z-index: 2;
+`;
+
 
 const TeamSlash = styled.div<{ side: "left" | "right" }>`
   position: absolute;
@@ -215,24 +246,6 @@ const ScoreText = styled.div`
   text-align: center;
   line-height: 1;
 `;
-
-const ScenarioContainer = styled.div`
-  position: relative; /* вместо absolute */
-  top: 60px;  /* убираем top, если не нужно */
-  left: auto;
-  width: 820px; /* чтобы покрыть всю ширину градиента */
-  height: 43px;
-  margin: 0 auto; /* центрируем */
-  background: #00a954;
-  clip-path: polygon(
-    20px 0,
-    calc(100% - 20px) 0,
-    100% 100%,
-    0% 100%
-  );
-  z-index: 0;
-`;
-
 
 const ScenarioContainerStart = styled.div`
   height: 43px;
