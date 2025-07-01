@@ -65,7 +65,7 @@ const slideDown = keyframes`
 const Container = styled.div`
   text-color: #fff;
   width: 1720px;
-  height: 920px;
+  height: 600px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -126,7 +126,9 @@ const GridWrapper = styled.div`
   grid-template-columns: repeat(4, 1fr);
   grid-auto-rows: 112px;
   gap: 20px 60px;
-`;
+  padding-bottom: 70px;
+
+  `;
 
 const PlayerBlock = styled.div`
   margin-top: 20px;
