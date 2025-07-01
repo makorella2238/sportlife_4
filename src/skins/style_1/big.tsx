@@ -11,6 +11,11 @@ export const Big = ({ show }: { show: boolean }) => {
   return (
     <Wrapper style={{ display: show ? "flex" : "none" }}>
       <FuroreFont />
+
+      <ScenarioContainer>
+        <ScenarioGradientOverlay />
+      </ScenarioContainer>
+
       <Row>
         <TeamLogo side="left" src={match?.team_1?.img} />
 
@@ -32,9 +37,9 @@ export const Big = ({ show }: { show: boolean }) => {
 
       <TeamLogo side="right" src={match?.team_2?.img} />
 
-      <ScenarioContainer>
+      <ScenarioContainerStart>
         <ScenarioText>{scenario}</ScenarioText>
-      </ScenarioContainer>
+      </ScenarioContainerStart>
     </Wrapper>
   );
 };
@@ -82,6 +87,7 @@ const Wrapper = styled.div`
 `;
 
 const Row = styled.div`
+  position: relative;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: end; /* выравниваем по нижнему краю */
@@ -111,8 +117,8 @@ const TeamBox = styled.div<{ side: "left" | "right"; color?: string }>`
 
   clip-path: ${(props) =>
     props.side === "left"
-      ? "polygon(0 0, calc(100% - 19px) 0, 100% 100%, 0% 100%)"
-      : "polygon(19px 0, 100% 0, 100% 100%, 0 100%)"};
+      ? "polygon(0 0, calc(100% - 28px) 0, 100% 100%, 0% 100%)"
+      : "polygon(28px 0, 100% 0, 100% 100%, 0 100%)"};
 
   ${(props) =>
     props.side === "left"
@@ -211,9 +217,27 @@ const ScoreText = styled.div`
 `;
 
 const ScenarioContainer = styled.div`
+  position: relative; /* вместо absolute */
+  top: 60px;  /* убираем top, если не нужно */
+  left: auto;
+  width: 820px; /* чтобы покрыть всю ширину градиента */
+  height: 43px;
+  margin: 0 auto; /* центрируем */
+  background: #00a954;
+  clip-path: polygon(
+    20px 0,
+    calc(100% - 20px) 0,
+    100% 100%,
+    0% 100%
+  );
+  z-index: 0;
+`;
+
+
+const ScenarioContainerStart = styled.div`
   height: 43px;
   position: absolute;
-  top: -43px; // Подвинуть вверх над счетчиком (регулируйте по необходимости)
+  top: 0px; // Подвинуть вверх над счетчиком (регулируйте по необходимости)
   left: 50%;
   transform: translateX(-50%);
   width: 220px;
@@ -227,6 +251,19 @@ const ScenarioContainer = styled.div`
     /* нижний правый угол */ 0% 100% /* нижний левый угол */
   );
   z-index: 5;
+`;
+
+// Новая трапеция с градиентом поверх старой
+const ScenarioGradientOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 820px;
+  height: 43px;
+  clip-path: polygon(30px 0, calc(100% - 30px) 0, 100% 100%, 0% 100%);
+  background: linear-gradient(90deg, #00a954 0%, #095102 51.98%, #00a954 100%);
+  z-index: 6;
+  pointer-events: none; /* чтобы не мешал кликам */
 `;
 
 // Скорректируем ScenarioText, чтобы занял всё пространство

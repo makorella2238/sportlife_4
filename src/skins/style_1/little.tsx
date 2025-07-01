@@ -19,12 +19,13 @@ export const Little = ({ show }: { show: boolean }) => {
         <TeamBox side="left">
           <InnerBox side="left">
             <FoulsRow side="left">
-              {[...Array(falloff)].map((_, i) => (
-                <FoulCircle
-                  key={i}
-                  active={(scoreboard?.team_1_fouls ?? 0) > i}
-                />
-              ))}
+              {scoreboard?.is_fouls &&
+                [...Array(falloff)].map((_, i) => (
+                  <FoulCircle
+                    key={i}
+                    active={(scoreboard?.team_1_fouls ?? 0) > i}
+                  />
+                ))}
             </FoulsRow>
             <TeamName>{getShortName(match?.team_1?.name)}</TeamName>
             <ScoreText side="right">{scoreboard?.team_1_score ?? 0}</ScoreText>
@@ -36,12 +37,13 @@ export const Little = ({ show }: { show: boolean }) => {
         <TeamBox side="right">
           <InnerBox side="right">
             <FoulsRow side="right">
-              {[...Array(falloff)].map((_, i) => (
-                <FoulCircle
-                  key={i}
-                  active={(scoreboard?.team_2_fouls ?? 0) > i}
-                />
-              ))}
+              {scoreboard?.is_fouls &&
+                [...Array(falloff)].map((_, i) => (
+                  <FoulCircle
+                    key={i}
+                    active={(scoreboard?.team_2_fouls ?? 0) > i}
+                  />
+                ))}
             </FoulsRow>
             <TeamName>{getShortName(match?.team_2?.name)}</TeamName>
             <ScoreText side="left">{scoreboard?.team_2_score ?? 0}</ScoreText>

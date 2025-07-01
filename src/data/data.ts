@@ -815,7 +815,7 @@ export const teams_data: Teams = {
 export const scoreboard_data: Scoreboard = {
   team_1_score: 12,
   team_2_score: 0,
-  is_fouls: true,
+  is_fouls: false,
   team_1_fouls: 1,
   team_2_fouls: 0
 };
