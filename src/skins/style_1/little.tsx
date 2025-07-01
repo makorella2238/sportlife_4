@@ -190,7 +190,7 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
 const TeamName = styled.div`
   font-family: "Furore", sans-serif;
   font-weight: 600;
-  font-size: 37px;
+  font-size: 42px;
   line-height: 48px;
   letter-spacing: 0%;
   text-transform: uppercase;

@@ -79,13 +79,25 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 `;
+const gradientPulse = keyframes`
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`;
 
 const Wrapper = styled.div`
-  background: linear-gradient(to bottom, #0e173f, #001b94);
-  padding: 100px 55px 70px 70px; /* top right bottom left */
+  background: linear-gradient(-45deg, #0e173f, #001b94, #0e173f);
+  background-size: 400% 400%;
+  animation: ${slideDown} 1s ease forwards, ${gradientPulse} 10s ease infinite;
+  padding: 100px 55px 70px 70px;
   width: 100%;
   height: 100%;
-  animation: ${slideDown} 1s ease forwards;
 `;
 
 const LeftCol = styled.div`
