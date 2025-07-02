@@ -216,7 +216,7 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
   object-fit: contain;
   left: ${(props) => (props.side === "left" ? "-40px" : "auto")};
   right: ${(props) => (props.side === "right" ? "-50px" : "auto")};
-  top: ${(props) => (props.side === "right" ? "20px" : "18px")};
+  top: ${(props) => (props.side === "right" ? "12px" : "12px")};
   z-index: 10;
 `;
 
