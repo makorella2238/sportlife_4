@@ -49,14 +49,19 @@ export const Mid = ({ show }: { show: boolean }) => {
 };
 const pulse = keyframes`
   0% {
-    background-color: rgba(212, 57, 39, 0.6);
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 50%;
   }
   50% {
-    background-color: rgba(177, 33, 17, 0.8);
-    filter: brightness(1.1);
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 50%;
   }
   100% {
-    background-color: rgba(212, 57, 39, 0.6);
+    background-position: 0% 50%;
   }
 `;
 
@@ -86,12 +91,12 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #d43927;
-  animation: ${pulse} 4s ease-in-out infinite;
+  background: linear-gradient(-45deg, #d43927, #942619, #d43927);
+  background-size: 400% 400%;
+  animation: ${pulse} 8s ease-in-out infinite;
   z-index: 5;
-  opacity: 0.9;
+  opacity: 0.9; /* Задаём прозрачность всей подложке */
 `;
-
 const Container = styled.div`
   position: absolute;
   top: 0;
