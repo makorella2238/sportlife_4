@@ -71,6 +71,14 @@ const pulse = keyframes`
   }
 `;
 
+const pulseScale = keyframes`
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+`;
 
 const Overlay = styled.div`
   position: absolute;
@@ -82,9 +90,8 @@ const Overlay = styled.div`
   background-size: 400% 400%;
   animation: ${pulse} 8s ease-in-out infinite;
   z-index: 5;
-  opacity: 0.8;
+  opacity: 0.9; /* Задаём прозрачность всей подложке */
 `;
-
 
 const Container = styled.div`
   position: absolute;
@@ -152,6 +159,8 @@ const TeamLogo = styled.img`
   object-fit: contain;
   margin-bottom: 20px;
   z-index: 5;
+    animation: ${pulseScale} 3s ease-in-out infinite;
+
 `;
 
 const Trener = styled.div`

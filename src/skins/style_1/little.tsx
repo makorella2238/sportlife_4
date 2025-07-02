@@ -32,13 +32,7 @@ export const Little = ({ show }: { show: boolean }) => {
 
           <MainScore>
             <ScoreValue>{scoreboard?.team_1_score}</ScoreValue>
-            <WhiteDivider>
-              <DividerTop />
-              <div style={{ height: "25px" }} />
-
-              <DividerBottom />
-            </WhiteDivider>
-
+            <ScoreValue>–</ScoreValue>
             <ScoreValue>{scoreboard?.team_2_score}</ScoreValue>
           </MainScore>
 
@@ -159,7 +153,6 @@ const MainScore = styled.div`
 
 const ScoreValue = styled.div`
   font-size: 32px; // было 39px
-  padding: 0 12px;
   width: 40px; // было 50px
   text-align: center;
   font-weight: 600;

@@ -60,7 +60,6 @@ const pulse = keyframes`
   }
 `;
 
-
 const slideDown = keyframes`
   from {
     transform: translateY(-100%);
@@ -69,6 +68,15 @@ const slideDown = keyframes`
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+`;
+
+const pulseScale = keyframes`
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
   }
 `;
 
@@ -83,7 +91,6 @@ const Overlay = styled.div`
   z-index: 5;
   opacity: 0.9;
 `;
-
 
 const Container = styled.div`
   position: absolute;
@@ -156,7 +163,7 @@ const TeamsRow = styled.div`
   display: flex;
   juctify-content: center;
   width: 1039px;
-  position: relative;       /* Чтобы позиционировать LogoCombo относительно этого контейнера */
+  position: relative; /* Чтобы позиционировать LogoCombo относительно этого контейнера */
   display: flex;
   justify-content: space-between; /* Команды слева и справа */
   align-items: center;
@@ -169,7 +176,6 @@ const TeameBox = styled.div<{ color?: string }>`
   flex-direction: column;
   align-items: center;
 `;
-
 
 const TeamName = styled.div`
   width: 100%;
@@ -188,6 +194,7 @@ const TeamLogo = styled.img`
   height: 250px;
   object-fit: contain;
   margin-bottom: 20px;
+  animation: ${pulseScale} 3s ease-in-out infinite;
 `;
 
 const Row = styled.div`
@@ -274,13 +281,13 @@ const TeamLogo3 = styled.img`
 `;
 
 const LogoCombo = styled.div`
-  position: absolute;      /* Абсолютное позиционирование */
-  left: 50%;              /* Сдвигаем в центр по левому краю */
+  position: absolute; /* Абсолютное позиционирование */
+  left: 50%; /* Сдвигаем в центр по левому краю */
   transform: translateX(-50%); /* Центрируем по середине */
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 15px;
-  z-index: 10;            /* Поверх всего */
-  width: 300px;           /* Можно подстроить под размеры логотипов */
+  z-index: 10; /* Поверх всего */
+  width: 300px; /* Можно подстроить под размеры логотипов */
 `;
