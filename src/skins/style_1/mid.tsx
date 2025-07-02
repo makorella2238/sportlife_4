@@ -85,6 +85,34 @@ const pulseScale = keyframes`
   }
 `;
 
+const lightningStrike = keyframes`
+  0%, 100% {
+    filter: brightness(1) drop-shadow(0 0 0 transparent);
+    transform: translateX(0);
+    opacity: 1;
+  }
+  10% {
+    filter: brightness(3) drop-shadow(0 0 10px #fff);
+    opacity: 1;
+    transform: translateX(2px);
+  }
+  20% {
+    filter: brightness(1.5) drop-shadow(0 0 5px #f0f8ff);
+    opacity: 0.8;
+    transform: translateX(-2px);
+  }
+  30% {
+    filter: brightness(2.5) drop-shadow(0 0 12px #aaf);
+    opacity: 1;
+    transform: translateX(1px);
+  }
+  50% {
+    filter: brightness(1) drop-shadow(0 0 0 transparent);
+    opacity: 0.7;
+    transform: translateX(0);
+  }
+`;
+
 const Overlay = styled.div`
   position: absolute;
   top: 0;
@@ -277,6 +305,7 @@ const TeamLogo2 = styled.img`
   width: 68px;
   height: 182px;
   object-fit: contain;
+  animation: ${lightningStrike} 2.5s ease-in-out infinite;
 `;
 
 const TeamLogo3 = styled.img`
