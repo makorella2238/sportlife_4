@@ -104,7 +104,7 @@ const TeamBox = styled.div<{ side: "left" | "right" }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 62px;
+  height: 53px;
   width: 100%;
   position: relative;
 `;
@@ -122,29 +122,28 @@ const InnerBox = styled.div<{ side: "left" | "right" }>`
 `;
 
 const ScoreBox = styled.div`
-  box-shadow: -3px -2px 11px 0px #00000099;
-  width: 175px;
-  height: auto;
+  width: 140px; // уменьшено с 175px
+  padding: 6px 0; // меньше вертикального пространства
+  border-radius: 16px; // чуть менее округлые углы
+  background: #242625;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background: #242625;
-  padding: 10px 0;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
 `;
 
+
 const FoulsRowNew = styled.div`
+  font-size: 18px; // было 24px
+  margin-bottom: 4px; // меньше отступ
+  padding: 0 8px;
   width: 100%;
   display: flex;
   justify-content: center;
-  aign-items: center;
-  font-weight: 500;
-  font-size: 24px;
-  padding: 0 12px;
-  margin-bottom: 8px;
+  align-items: center;
 `;
+
 
 const FoulNumber = styled.div`
   color: #fff;
@@ -159,20 +158,21 @@ const MainScore = styled.div`
 `;
 
 const ScoreValue = styled.div`
-  font-size: 39px;
+  font-size: 32px; // было 39px
+  padding: 0 12px;
+  width: 40px; // было 50px
+  text-align: center;
   font-weight: 600;
   color: white;
-  padding: 0 18px;
-  width: 50px; /* или auto, если текст фиксированной ширины */
-  text-align: center;
 `;
+
 
 const WhiteDivider = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 4px;
-  height: 63px;
+  height: 40px;
 `;
 
 const DividerSegment = styled.div`
@@ -189,13 +189,13 @@ const DividerBottom = styled(DividerSegment)`
 `;
 
 const TimerText = styled.div`
-  margin-top: 8px;
-  font-size: 24px;
+  margin-top: 4px; // меньше отступа
+  font-size: 18px; // было 24px
   font-weight: 600;
   color: #fff;
   text-align: center;
-  width: 100%; /* чтобы занимал всю ширину родителя */
 `;
+ 
 
 const Row = styled.div`
   height: 56px;
@@ -216,7 +216,7 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
   object-fit: contain;
   left: ${(props) => (props.side === "left" ? "-40px" : "auto")};
   right: ${(props) => (props.side === "right" ? "-50px" : "auto")};
-  top: ${(props) => (props.side === "right" ? "30px" : "35px")};
+  top: ${(props) => (props.side === "right" ? "20px" : "18px")};
   z-index: 10;
 `;
 
@@ -236,25 +236,11 @@ const TeamName = styled.div`
   z-index: 1;
 `;
 
-const ScenarioContainer = styled.div`
-  position: absolute;
-  top: 89px;
-  left: 50%;
-  transform: translate(-50%, -50%); /* Центр по X и Y */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1; /* Должен быть выше Row, но можно настраивать */
-`;
-
 const FoulText = styled.div`
-  margin-top: 4px;
-  height: 22px;
-  font-size: 20px;
-  font-weight: 600;
-  color: #fff;
-  padding: 0 14px;
-  line-height: 1;
-  white-space: nowrap;
+  font-size: 16px; // было 20px
+  padding: 0 8px;
+  height: auto;
+  margin-top: 2px;
   text-transform: uppercase;
+  color: #fff;
 `;

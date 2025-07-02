@@ -55,14 +55,16 @@ const slideDown = keyframes`
 
 const Container = styled.div`
   position: absolute;
-  top: 10%;
+  top: 10px;
   right: 20%;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* чтобы контент не был по центру вертикально */
   justify-content: center;
   width: 1432px;
   height: 960px;
+  box-sizing: border-box;
 `;
+
 
 const Wrapper = styled.div`
   border-radius: 64px;
@@ -88,16 +90,37 @@ const BackgroundImage = styled.div`
   z-index: 1;
 `;
 
+const pulse = keyframes`
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`;
+
 const Overlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #d43927;
-  opacity: 0.7;
-  z-index: 2;
+  background: linear-gradient(-45deg, #d43927, #942619, #d43927);
+  background-size: 400% 400%;
+  animation: ${pulse} 8s ease-in-out infinite;
+  z-index: 5;
+  opacity: 0.8;
 `;
+
 
 const TitleContainer = styled.div`
   padding: 16px 45px;

@@ -47,6 +47,19 @@ export const Mid = ({ show }: { show: boolean }) => {
     </Container>
   );
 };
+const pulse = keyframes`
+  0% {
+    background-color: rgba(212, 57, 39, 0.6);
+  }
+  50% {
+    background-color: rgba(177, 33, 17, 0.8);
+    filter: brightness(1.1);
+  }
+  100% {
+    background-color: rgba(212, 57, 39, 0.6);
+  }
+`;
+
 
 const slideDown = keyframes`
   from {
@@ -58,6 +71,19 @@ const slideDown = keyframes`
     opacity: 1;
   }
 `;
+
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #d43927;
+  animation: ${pulse} 4s ease-in-out infinite;
+  z-index: 5;
+  opacity: 0.9;
+`;
+
 
 const Container = styled.div`
   position: absolute;
@@ -71,6 +97,7 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
+  position: relative; /* <<< ДОБАВЬ ЭТО */
   border-radius: 64px;
   width: 1290px;
   height: 800px;
@@ -81,7 +108,6 @@ const Wrapper = styled.div`
   overflow: hidden;
   background: url("/Group.png") no-repeat center center / cover;
   animation: ${slideDown} 0.5s ease forwards;
-
   padding-bottom: 20px;
 `;
 
@@ -136,18 +162,6 @@ const TeamsRow = styled.div`
   align-items: center;
   margin-top: 20px;
   z-index: 5;
-`;
-
-
-const Overlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #d43927;
-  opacity: 0.7; /* Можно регулировать прозрачность */
-  z-index: 2; /* Поверх фонового изображения, но под контентом */
 `;
 
 const TeameBox = styled.div<{ color?: string }>`
